@@ -1,5 +1,5 @@
-var app;
-(function (app) {
+var psMovies;
+(function (psMovies) {
     //let theController = function () {
     //	let vm = this;
     //	vm.message = "hello from a component controller";
@@ -7,7 +7,7 @@ var app;
     //		vm.message = "New Message";
     //	};
     //};
-    angular.module("app")
+    angular.module("psMovies")
         .component("movieList", {
         templateUrl: "/ps-movies/movieList/movieList.component.html",
         controllerAs: "vm",
@@ -49,5 +49,5 @@ var app;
                 return MovieController;
             }())]
     });
-})(app || (app = {}));
+})(psMovies || (psMovies = {}));
 //# sourceMappingURL=movieList.component.js.map

@@ -1,4 +1,4 @@
-﻿module app {
+﻿module psMovies {
 	interface IMovieController {
 		// fields
 		message: string;
@@ -23,7 +23,7 @@
 	//	};
 	//};
 
-	angular.module("app")
+	angular.module("psMovies")
 		.component("movieList", {
 			templateUrl: "/ps-movies/movieList/movieList.component.html",
 			controllerAs: "vm",

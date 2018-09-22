@@ -1,11 +1,11 @@
-﻿module app {
+﻿module psMovies {
 	interface IMovieRating {
 		// methods
 		$onInit(): void;
 		$onChanges(): void;
 	}
 
-	angular.module("app")
+	angular.module("psMovies")
 		.component("movieRating", {
 			templateUrl: "/ps-movies/movieRating/movieRating.component.html",
 			bindings: {

@@ -1,6 +1,6 @@
-var app;
-(function (app) {
-    angular.module("app")
+var psMovies;
+(function (psMovies) {
+    angular.module("psMovies")
         .component("movieRating", {
         templateUrl: "/ps-movies/movieRating/movieRating.component.html",
         bindings: {
@@ -23,5 +23,5 @@ var app;
             return MovieRating;
         }())
     });
-})(app || (app = {}));
+})(psMovies || (psMovies = {}));
 //# sourceMappingURL=movieRating.component.js.map
