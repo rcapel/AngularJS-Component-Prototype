@@ -1,28 +1,45 @@
 var psMovies;
 (function (psMovies) {
-    //let theController = function () {
-    //	let vm = this;
-    //	vm.message = "hello from a component controller";
-    //	vm.changeMessage = function () {
-    //		vm.message = "New Message";
-    //	};
-    //};
+    angular.module("psMovies")
+        .service("movieService", ["$http", /** @class */ (function () {
+            //*
+            // constructors
+            //*
+            function MovieService($http) {
+                this.$http = $http;
+            }
+            //*
+            // public methods
+            //*
+            MovieService.prototype.fetch = function () {
+                return this.$http.get("/movies.json")
+                    .then(function (data) {
+                    return data.data;
+                });
+            };
+            return MovieService;
+        }())]);
     angular.module("psMovies")
         .component("movieList", {
         templateUrl: "/ps-movies/movieList/movieList.component.html",
         controllerAs: "vm",
-        controller: ["$http", /** @class */ (function () {
+        controller: ["movieService", /** @class */ (function () {
+                //*
                 // constructors
-                function MovieController($http) {
-                    this.$http = $http;
+                //*
+                function MovieController(movieService) {
+                    this.movieService = movieService;
+                    //*
                     // fields
-                    this.message = "Hello from MovieController in component";
+                    //*
                     this.movies = [];
                 }
-                // methods
+                //*
+                // public methods
+                //*
                 MovieController.prototype.$onInit = function () {
                     var _this = this;
-                    this.fetchMovies()
+                    this.movieService.fetch()
                         .then(function (data) {
                         _this.movies = data;
                     });
@@ -39,12 +56,6 @@ var psMovies;
                 };
                 MovieController.prototype.movieInfo = function () {
                     alert(this.movies.length);
-                };
-                MovieController.prototype.fetchMovies = function () {
-                    return this.$http.get("/movies.json")
-                        .then(function (data) {
-                        return data.data;
-                    });
                 };
                 return MovieController;
             }())]

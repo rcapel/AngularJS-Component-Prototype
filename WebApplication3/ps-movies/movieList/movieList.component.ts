@@ -1,12 +1,4 @@
 ﻿module psMovies {
-	interface IMovieController {
-		// fields
-		message: string;
-
-		// methods
-		$onInit(): void;
-	}
-
 	interface IMovie {
 		id: number;
 		title: string;
@@ -14,34 +6,64 @@
 		length: number;
 	}
 
-	//let theController = function () {
-	//	let vm = this;
+	interface IMovieService {
+		// methods
+		fetch(): Promise<IMovie[]>;
+	}
 
-	//	vm.message = "hello from a component controller";
-	//	vm.changeMessage = function () {
-	//		vm.message = "New Message";
-	//	};
-	//};
+	angular.module("psMovies")
+		.service("movieService", ["$http",
+			class MovieService implements IMovieService {
+				//*
+				// constructors
+				//*
+				constructor(private $http) { }
+
+				//*
+				// public methods
+				//*
+				fetch(): Promise<IMovie[]> {
+					return this.$http.get("/movies.json")
+						.then(data => {
+							return data.data;
+						});
+				}
+
+			}
+		]);
+
+	interface IMovieController {
+		// fields
+		movies: IMovie[];
+
+		// methods
+		$onInit(): void;
+		setRating(movie: IMovie, rating: number): void;
+		upRating(movie: IMovie): void;
+		downRating(movie: IMovie): void;
+	}
 
 	angular.module("psMovies")
 		.component("movieList", {
 			templateUrl: "/ps-movies/movieList/movieList.component.html",
 			controllerAs: "vm",
-			controller: ["$http",
+			controller: ["movieService",
 				class MovieController implements IMovieController {
-
+					//*
 					// fields
-					message: string = "Hello from MovieController in component";
+					//*
 					movies: IMovie[] = [];
 
+					//*
 					// constructors
-					constructor(private $http) {
-					}
+					//*
+					constructor(private movieService: IMovieService) { }
 
-					// methods
-
+					//*
+					// public methods
+					//*
 					$onInit(): void {
-						this.fetchMovies()
+						this.movieService.fetch()
 							.then(data => {
 								this.movies = data;
 							});
@@ -62,13 +84,6 @@
 
 					movieInfo() {
 						alert(this.movies.length);
-					}
-
-					private fetchMovies(): Promise<IMovie[]> {
-						return this.$http.get("/movies.json")
-							.then(data => {
-								return data.data;
-							});
 					}
 
 				}]
